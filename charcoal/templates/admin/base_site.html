@@ -3,7 +3,10 @@
 {% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+<a class="bx--platform-header__name" href="{% url 'admin:index' %}" title="{{ site_header|default:_('Django') }}">
+  {{ site_header|default:_('Django') }}
+  <span class="bx--platform-header__platform-name">[Dashboard]</span>
+</a>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
