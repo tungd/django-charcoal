@@ -1,129 +1,129 @@
 {% load i18n static %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
-<head>
-<title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "carbon-components+extras.css" %}{% endblock %}">
-{% block extrastyle %}{% endblock %}
-{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
-{% block extrahead %}{% endblock %}
-{% block responsive %}
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "carbon-components+extras.css" %}{% endblock %}">
+    {% block extrastyle %}{% endblock %}
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
+    {% block extrahead %}{% endblock %}
+    {% block responsive %}
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
     {% comment %}
     <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
     {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
     {% endcomment %}
-{% endblock %}
-{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
-</head>
-{% load i18n %}
-
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
-  data-admin-utc-offset="{% now "Z" %}">
-
-  {% if not is_popup %}
-  <header class="bx--platform-header">
-    <button class="bx--platform-header__menu-trigger bx--platform-header__action" title="Open menu">
-      <svg aria-hidden="true" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M4 6h24v2H4zm0 18h24v2H4zm0-9h24v2H4z"/></svg>
-    </button>
-
-    {% block branding %}{% endblock %}
-
-    {% block nav-global %}
-    <nav class="bx--platform-header__nav">
-      <ul class="bx--platform-header__links">
-        <li class="bx--platform-header__link-item">
-          <a href="javascript:void(0)" class="bx--platform-header__link">
-            L1 link 1
-          </a>
-        </li>
-      </ul>
-    </nav>
     {% endblock %}
+    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+  </head>
+  {% load i18n %}
 
-    <div class="bx--platform-header__global">
-      {% block usertools %}
-      {% if has_permission %}
-      <ul class="bx--platform-header__links">
-        {% if site_url %}
-        <li class="bx--platform-header__link-item" tabindex="0">
-          <a href="{{ site_url }}" class="bx--platform-header__link">
-            {% trans 'View site' %}
-          </a>
-        </li>
-        {% endif %}
+  <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+        data-admin-utc-offset="{% now "Z" %}">
 
-        <li class="bx--platform-header__dropdown-item" tabindex="0">
-          <strong>{% firstof user.get_short_name user.get_username %}</strong>
-          <svg class="bx--platform-header__arrow" width="12" height="7">
-            <path d="M6.002 5.55L11.27 0l.726.685L6.003 7 0 .685.726 0z"/>
-          </svg>
-          <ul class="bx--dropdown-item__menu">
-            {% block userlinks %}
+    {% if not is_popup %}
+    <header class="bx--platform-header">
+      <button class="bx--platform-header__menu-trigger bx--platform-header__action" title="Open menu">
+        <svg aria-hidden="true" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M4 6h24v2H4zm0 18h24v2H4zm0-9h24v2H4z"/></svg>
+      </button>
 
-            {% if user.is_active and user.is_staff %}
-            {% url 'django-admindocs-docroot' as docsroot %}
-            {% if docsroot %}
-            <li class="bx--dropdown-item__menu-item">
-              <a href="{{ docsroot }}">{% trans 'Documentation' %}</a>
-            </li>
-            {% endif %}
-            {% endif %}
+      {% block branding %}{% endblock %}
 
-            {% if user.has_usable_password %}
-            <li class="bx--dropdown-item__menu-item">
-              <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
-            </li>
-            {% endif %}
-
-            <li class="bx--dropdown-item__menu-item">
-              <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
-            </li>
-            {% endblock %}
-          </ul>
-        </li>
-      </ul>
-      {% endif %}
+      {% block nav-global %}
+      <nav class="bx--platform-header__nav">
+        <ul class="bx--platform-header__links">
+          <li class="bx--platform-header__link-item">
+            <a href="javascript:void(0)" class="bx--platform-header__link">
+              L1 link 1
+            </a>
+          </li>
+        </ul>
+      </nav>
       {% endblock %}
-    </div>
-  </header>
-  {% endif %}
 
-  <section class="content" style="padding:5rem 4rem 0">
+      <div class="bx--platform-header__global">
+        {% block usertools %}
+        {% if has_permission %}
+        <ul class="bx--platform-header__links">
+          {% if site_url %}
+          <li class="bx--platform-header__link-item" tabindex="0">
+            <a href="{{ site_url }}" class="bx--platform-header__link">
+              {% trans 'View site' %}
+            </a>
+          </li>
+          {% endif %}
 
-    {% block breadcrumbs %}
-    <nav class="bx--breadcrumb bx--breadcrumb--no-trailing-slash" aria-label="breadcrumb">
-      <div class="bx--breadcrumb-item">
-        <a href="{% url 'admin:index' %}" class="bx--link">{% trans 'Home' %}</a>
+          <li class="bx--platform-header__dropdown-item" tabindex="0">
+            <strong>{% firstof user.get_short_name user.get_username %}</strong>
+            <svg class="bx--platform-header__arrow" width="12" height="7">
+              <path d="M6.002 5.55L11.27 0l.726.685L6.003 7 0 .685.726 0z"/>
+            </svg>
+            <ul class="bx--dropdown-item__menu">
+              {% block userlinks %}
+
+              {% if user.is_active and user.is_staff %}
+              {% url 'django-admindocs-docroot' as docsroot %}
+              {% if docsroot %}
+              <li class="bx--dropdown-item__menu-item">
+                <a href="{{ docsroot }}">{% trans 'Documentation' %}</a>
+              </li>
+              {% endif %}
+              {% endif %}
+
+              {% if user.has_usable_password %}
+              <li class="bx--dropdown-item__menu-item">
+                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
+              </li>
+              {% endif %}
+
+              <li class="bx--dropdown-item__menu-item">
+                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+              </li>
+              {% endblock %}
+            </ul>
+          </li>
+        </ul>
+        {% endif %}
+        {% endblock %}
       </div>
-      <div class="bx--breadcrumb-item">
-        {% if title %}<span>{{ title }}</span>{% endif %}
+    </header>
+    {% endif %}
+
+    <section class="content" style="padding:5rem 4rem 0">
+
+      {% block breadcrumbs %}
+      <nav class="bx--breadcrumb bx--breadcrumb--no-trailing-slash" aria-label="breadcrumb">
+        <div class="bx--breadcrumb-item">
+          <a href="{% url 'admin:index' %}" class="bx--link">{% trans 'Home' %}</a>
+        </div>
+        <div class="bx--breadcrumb-item">
+          {% if title %}<span>{{ title }}</span>{% endif %}
+        </div>
+      </nav>
+      {% endblock %}
+
+      {% block pretitle %}{% endblock %}
+      {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+
+      <div style="display:flex;margin-top:1rem">
+        {% block content %}
+        {% block object-tools %}{% endblock %}
+        {{ content }}
+        {% endblock %}
+
+        {% block sidebar %}{% endblock %}
       </div>
-    </nav>
-    {% endblock %}
+    </section>
 
-    {% block pretitle %}{% endblock %}
-    {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+    {% block footer %}{% endblock %}
 
-    {% block content %}
-    {% block object-tools %}{% endblock %}
-    {{ content }}
-    {% endblock %}
+    <!-- Container -->
+    <div id="container">
 
-    <div style="display:none">
-      {% block sidebar %}{% endblock %}
-    </div>
-  </section>
-
-  {% block footer %}{% endblock %}
-
-<!-- Container -->
-<div id="container">
-
-  {% if not is_popup %}
-    <!--  -->
-          {% comment %}
-    <div id="header">
+      {% if not is_popup %}
+      <!--  -->
+      {% comment %}
+      <div id="header">
         <div id="branding">
           {% block branding %}{% endblock %}
           {% endcomment %}
@@ -132,68 +132,68 @@
         {% block usertools %}
         {% if has_permission %}
         <div id="user-tools">
-            {% block welcome-msg %}
-                {% trans 'Welcome,' %}
-                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
-            {% endblock %}
-            {% block userlinks %}
-                {% if site_url %}
-                    <a href="{{ site_url }}">{% trans 'View site' %}</a> /
-                {% endif %}
-                {% if user.is_active and user.is_staff %}
-                    {% url 'django-admindocs-docroot' as docsroot %}
-                    {% if docsroot %}
-                        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
-                    {% endif %}
-                {% endif %}
-                {% if user.has_usable_password %}
-                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
-                {% endif %}
-                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
-            {% endblock %}
+          {% block welcome-msg %}
+          {% trans 'Welcome,' %}
+          <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+          {% endblock %}
+          {% block userlinks %}
+          {% if site_url %}
+          <a href="{{ site_url }}">{% trans 'View site' %}</a> /
+          {% endif %}
+          {% if user.is_active and user.is_staff %}
+          {% url 'django-admindocs-docroot' as docsroot %}
+          {% if docsroot %}
+          <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+          {% endif %}
+          {% endif %}
+          {% if user.has_usable_password %}
+          <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+          {% endif %}
+          <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+          {% endblock %}
         </div>
         {% endif %}
         {% endblock %}
         {% block nav-global %}{% endblock %}
-    </div>
-    <!-- END Header -->
-    {% block breadcrumbs %}
-    <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-    {% if title %} &rsaquo; {{ title }}{% endif %}
-    </div>
-    {% endblock %}
-    {% endcomment %}
-    {% endif %}
+      </div>
+      <!-- END Header -->
+      {% block breadcrumbs %}
+      <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        {% if title %} &rsaquo; {{ title }}{% endif %}
+      </div>
+      {% endblock %}
+      {% endcomment %}
+      {% endif %}
 
 
-    {% block messages %}
-        {% if messages %}
-        <ul class="messagelist">{% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+      {% block messages %}
+      {% if messages %}
+      <ul class="messagelist">{% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
         {% endfor %}</ul>
-        {% endif %}
-    {% endblock messages %}
+      {% endif %}
+      {% endblock messages %}
 
 
-    {% comment %}
-    <!-- Content -->
-    <div id="content" class="{% block coltype %}colM{% endblock %}">
-        {% block pretitle %}{% endblock %}
-        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-        {% block content %}
-        {% block object-tools %}{% endblock %}
-        {{ content }}
-        {% endblock %}
-        {% block sidebar %}{% endblock %}
-        <br class="clear">
+      {% comment %}
+      <!-- Content -->
+        <div id="content" class="{% block coltype %}colM{% endblock %}">
+          {% block pretitle %}{% endblock %}
+          {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+          {% block content %}
+          {% block object-tools %}{% endblock %}
+          {{ content }}
+          {% endblock %}
+          {% block sidebar %}{% endblock %}
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+
+        {% block footer %}<div id="footer"></div>{% endblock %}
     </div>
-    <!-- END Content -->
-
-    {% block footer %}<div id="footer"></div>{% endblock %}
-</div>
-<!-- END Container -->
+    <!-- END Container -->
     {% endcomment %}
 
-</body>
+  </body>
 </html>
