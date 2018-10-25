@@ -22,7 +22,6 @@
   data-admin-utc-offset="{% now "Z" %}">
 
   {% if not is_popup %}
-    <!-- Header -->
   <header class="bx--platform-header">
     <button class="bx--platform-header__menu-trigger bx--platform-header__action" title="Open menu">
       <svg aria-hidden="true" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M4 6h24v2H4zm0 18h24v2H4zm0-9h24v2H4z"/></svg>
@@ -90,14 +89,42 @@
   </header>
   {% endif %}
 
+  <section class="content" style="padding:5rem 4rem 0">
+
+    {% block breadcrumbs %}
+    <nav class="bx--breadcrumb bx--breadcrumb--no-trailing-slash" aria-label="breadcrumb">
+      <div class="bx--breadcrumb-item">
+        <a href="{% url 'admin:index' %}" class="bx--link">{% trans 'Home' %}</a>
+      </div>
+      <div class="bx--breadcrumb-item">
+        {% if title %}<span>{{ title }}</span>{% endif %}
+      </div>
+    </nav>
+    {% endblock %}
+
+    {% block pretitle %}{% endblock %}
+    {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+
+    {% block content %}
+    {% block object-tools %}{% endblock %}
+    {{ content }}
+    {% endblock %}
+
+    <div style="display:none">
+      {% block sidebar %}{% endblock %}
+    </div>
+  </section>
+
+  {% block footer %}{% endblock %}
+
 <!-- Container -->
 <div id="container">
 
   {% if not is_popup %}
     <!--  -->
+          {% comment %}
     <div id="header">
         <div id="branding">
-          {% comment %}
           {% block branding %}{% endblock %}
           {% endcomment %}
         </div>
@@ -128,7 +155,6 @@
         {% endif %}
         {% endblock %}
         {% block nav-global %}{% endblock %}
-        {% endcomment %}
     </div>
     <!-- END Header -->
     {% block breadcrumbs %}
@@ -137,7 +163,9 @@
     {% if title %} &rsaquo; {{ title }}{% endif %}
     </div>
     {% endblock %}
+    {% endcomment %}
     {% endif %}
+
 
     {% block messages %}
         {% if messages %}
@@ -147,6 +175,8 @@
         {% endif %}
     {% endblock messages %}
 
+
+    {% comment %}
     <!-- Content -->
     <div id="content" class="{% block coltype %}colM{% endblock %}">
         {% block pretitle %}{% endblock %}
@@ -163,6 +193,7 @@
     {% block footer %}<div id="footer"></div>{% endblock %}
 </div>
 <!-- END Container -->
+    {% endcomment %}
 
 </body>
 </html>
