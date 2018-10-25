@@ -29,6 +29,64 @@
     </button>
 
     {% block branding %}{% endblock %}
+
+    {% block nav-global %}
+    <nav class="bx--platform-header__nav">
+      <ul class="bx--platform-header__links">
+        <li class="bx--platform-header__link-item">
+          <a href="javascript:void(0)" class="bx--platform-header__link">
+            L1 link 1
+          </a>
+        </li>
+      </ul>
+    </nav>
+    {% endblock %}
+
+    <div class="bx--platform-header__global">
+      {% block usertools %}
+      {% if has_permission %}
+      <ul class="bx--platform-header__links">
+        {% if site_url %}
+        <li class="bx--platform-header__link-item" tabindex="0">
+          <a href="{{ site_url }}" class="bx--platform-header__link">
+            {% trans 'View site' %}
+          </a>
+        </li>
+        {% endif %}
+
+        <li class="bx--platform-header__dropdown-item" tabindex="0">
+          <strong>{% firstof user.get_short_name user.get_username %}</strong>
+          <svg class="bx--platform-header__arrow" width="12" height="7">
+            <path d="M6.002 5.55L11.27 0l.726.685L6.003 7 0 .685.726 0z"/>
+          </svg>
+          <ul class="bx--dropdown-item__menu">
+            {% block userlinks %}
+
+            {% if user.is_active and user.is_staff %}
+            {% url 'django-admindocs-docroot' as docsroot %}
+            {% if docsroot %}
+            <li class="bx--dropdown-item__menu-item">
+              <a href="{{ docsroot }}">{% trans 'Documentation' %}</a>
+            </li>
+            {% endif %}
+            {% endif %}
+
+            {% if user.has_usable_password %}
+            <li class="bx--dropdown-item__menu-item">
+              <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
+            </li>
+            {% endif %}
+
+            <li class="bx--dropdown-item__menu-item">
+              <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+            </li>
+            {% endblock %}
+          </ul>
+        </li>
+      </ul>
+      {% endif %}
+      {% endblock %}
+    </div>
   </header>
   {% endif %}
 
@@ -39,7 +97,11 @@
     <!--  -->
     <div id="header">
         <div id="branding">
+          {% comment %}
+          {% block branding %}{% endblock %}
+          {% endcomment %}
         </div>
+        {% comment %}
         {% block usertools %}
         {% if has_permission %}
         <div id="user-tools">
@@ -66,6 +128,7 @@
         {% endif %}
         {% endblock %}
         {% block nav-global %}{% endblock %}
+        {% endcomment %}
     </div>
     <!-- END Header -->
     {% block breadcrumbs %}
